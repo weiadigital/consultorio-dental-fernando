@@ -1,0 +1,34 @@
+---
+/**
+ * aviso-de-privacidad.astro — Página obligatoria LFPDPPP
+ * 
+ * SETUP: Reemplazar todos los [CORCHETES] con datos reales del cliente.
+ * Copiar este archivo a src/pages/aviso-de-privacidad.astro en cada proyecto.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import AvisoPrivacidad from '../components/AvisoPrivacidad.astro';
+---
+
+<BaseLayout
+  titulo="Aviso de Privacidad"
+  descripcion="Aviso de privacidad y protección de datos personales de Consultorio Dental Dr. Fernando Hernández, en cumplimiento con la LFPDPPP."
+  schema={{
+    nombre: 'Consultorio Dental Dr. Fernando Hernández',
+    descripcion: 'Odontología familiar en Coyoacán con servicios de limpieza, blanqueamiento, resina y ortodoncia.',
+    telefono: '5544231890',
+    direccion: 'Av. Universidad 847, Col. Del Valle, Coyoacán, CDMX',
+    ciudad: 'Coyoacán',
+    tipoNegocio: 'MedicalBusiness',
+  }}
+  telefono="5544231890"
+  mensajeWa="Hola, tengo una pregunta sobre el aviso de privacidad"
+>
+  <AvisoPrivacidad
+    negocio="Consultorio Dental Dr. Fernando Hernández"
+    domicilio="Av. Universidad 847, Col. Del Valle, Coyoacán, CDMX, CP 03100"
+    email="contacto@drhernandez.dental"
+    telefono="(55) 4423-1890"
+    usaIA={true}
+    nombreIA="Son.ia"
+  />
+</BaseLayout>

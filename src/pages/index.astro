@@ -1,0 +1,225 @@
+---
+/**
+ * T2 — Split Profesional
+ * Intención: "Necesito credibilidad antes de vender"
+ * Sectores default: salud, servicios profesionales
+ * Estructura: Hero split → Stats credenciales → Servicios lista
+ *             → Proceso 3 pasos → FAQ → Formulario contacto → Footer
+ *
+ * INSTRUCCIONES PARA SOF.IA:
+ * 1. Stats deben ser REALES: años de experiencia, pacientes atendidos,
+ *    certificaciones, casos resueltos. NUNCA inventar.
+ * 2. ProcesoPasos: adaptar los 3 pasos al sector específico.
+ *    Salud: "Agenda → Consulta → Tratamiento"
+ *    Legal: "Consulta → Análisis → Resolución"
+ * 3. FAQ: 4-5 preguntas del sector. Ver design-system.md para defaults.
+ * 4. ContactoFormulario: campos recomendados según sector.
+ *    Salud: nombre, telefono, servicio, mensaje
+ *    Servicios prof.: nombre, email, telefono, mensaje
+ */
+
+import BaseLayout from '../layouts/BaseLayout.astro';
+import HeroSplit from '../components/HeroSplit.astro';
+import StatsCredenciales from '../components/StatsCredenciales.astro';
+import ServiciosList from '../components/ServiciosList.astro';
+import ProcesoPasos from '../components/ProcesoPasos.astro';
+import FAQAccordion from '../components/FAQAccordion.astro';
+import ContactoFormulario from '../components/ContactoFormulario.astro';
+import Footer from '../components/Footer.astro';
+import GoogleTagManager from '../components/GoogleTagManager.astro';
+
+// ─── DATOS DEL CLIENTE ────────────────────────────────────────────────────────
+
+const negocio = {
+  nombre:      'Consultorio Dental Dr. Fernando Hernández',
+  descripcion: 'Odontología familiar en Coyoacán con servicios de limpieza, blanqueamiento, resina y ortodoncia.',
+  telefono:    '5544231890',
+  whatsapp:    '5544231890',
+  direccion:   'Av. Universidad 847, Col. Del Valle, Coyoacán, CDMX',
+  ciudad:      'Coyoacán',
+  cp:          '03100',
+  horario:     'Lunes a viernes 9:00–19:00 h | Sábados 9:00–14:00 h',
+  tipoSchema:  'MedicalBusiness',
+  email:       'contacto@drhernandez.dental',
+  redes: [
+    { nombre: 'Instagram', url: 'https://instagram.com/drhernandez.dental' },
+    { nombre: 'Facebook', url: 'https://facebook.com/drhernandezdental' },
+  ],
+};
+
+const seo = {
+  titulo:      'Consultorio Dental Dr. Fernando Hernández | Coyoacán',
+  descripcion: 'Odontología familiar en Coyoacán. Limpieza, blanqueamiento, resina, ortodoncia. 11 años de experiencia. Consulta gratis si agendas tratamiento.',
+  canonicalUrl: 'https://drhernandez.weia.digital',
+  ogImagen:    'https://drhernandez.weia.digital/og-default.jpg',
+};
+
+const tokens = {
+  tokenPrimary:  'oklch(55% 0.14 230)',
+  tokenSurface:  'oklch(99% 0.003 230)',
+  tokenText:     'oklch(18% 0.020 230)',
+  tokenCta:      'oklch(55% 0.16 230)',
+};
+
+// Perfil de movimiento — derivado de Energía calculada del briefing
+// E 1-2 → 'subtle' | E 3-4 → 'fluid' | E 5 → 'expressive'
+const motionProfile = 'subtle' as 'subtle' | 'fluid' | 'expressive';
+
+const fuentes = {
+  heading: 'Source Sans 3',
+  body:    'Inter',
+};
+
+// ─── CONTENIDO ────────────────────────────────────────────────────────────────
+
+const hero = {
+  titulo:      '11 años cuidando sonrisas en Coyoacán',
+  subtitulo:   'Odontología familiar, moderna y confiable',
+  badge:       '11 años de experiencia',
+  ctaTexto:    'Agenda tu consulta',
+  ctaUrl:      `https://api.whatsapp.com/send?phone=521${negocio.whatsapp}&text=${encodeURIComponent('Hola, quiero agendar una consulta')}`,
+  imagenSrc:   '/images/hero.png',
+  imagenAlt:   'Consultorio dental moderno con equipamiento de última generación',
+  imagenLado:  'derecha' as const,
+};
+
+// Stats de credibilidad — SOLO datos reales y verificables
+const stats = [
+  { numero: '11', label: 'años de experiencia' },
+  { numero: '8', label: 'servicios especializados' },
+  { numero: '5,000+', label: 'sonrisas transformadas' },
+];
+
+const servicios = [
+  { nombre: 'Limpieza dental', precio: 450, descripcion: 'Limpieza profesional y pulido para una sonrisa radiante' },
+  { nombre: 'Blanqueamiento dental', precio: 1800, descripcion: 'Blanqueamiento profesional con resultados visibles en una sesión' },
+  { nombre: 'Ortodoncia metálica', precio: 8500, descripcion: 'Desde $8,500 — Alineación dental con brackets metálicos' },
+  { nombre: 'Ortodoncia estética', precio: 12000, descripcion: 'Desde $12,000 — Brackets de cerámica, prácticamente invisibles' },
+  { nombre: 'Resina dental', precio: 650, descripcion: 'Por diente — Restauración estética y funcional' },
+  { nombre: 'Extracción simple', precio: 500, descripcion: 'Extracción segura y sin complicaciones' },
+  { nombre: 'Guardas dentales', precio: 900, descripcion: 'Protección para deportistas y bruxismo' },
+  { nombre: 'Consulta de valoración', precio: 200, descripcion: 'Gratis si agendas tu tratamiento ese mismo día' },
+];
+
+const proceso = [
+  {
+    numero: 1,
+    titulo: 'Agenda tu cita',
+    descripcion: 'Escríbenos por WhatsApp o llama. Te confirmamos disponibilidad en menos de 2 horas.',
+    icono: '📅',
+  },
+  {
+    numero: 2,
+    titulo: 'Consulta inicial',
+    descripcion: 'Evaluamos tu caso, explicamos opciones y presupuesto. Consulta gratis si agendas tratamiento.',
+    icono: '🦷',
+  },
+  {
+    numero: 3,
+    titulo: 'Tratamiento y seguimiento',
+    descripcion: 'Ejecutamos el plan con cuidado. Seguimiento post-tratamiento incluido.',
+    icono: '✨',
+  },
+];
+
+const faq = [
+  { 
+    pregunta: '¿Atienden a niños?', 
+    respuesta: 'Sí, somos un consultorio familiar. Atendemos desde los 3 años con técnicas amigables y sin dolor. Los papás pueden estar presentes durante la consulta.' 
+  },
+  { 
+    pregunta: '¿Cuánto cuesta la consulta inicial?', 
+    respuesta: 'La consulta de valoración cuesta $200, pero es GRATIS si agendas tu tratamiento ese mismo día. Así conoces nuestro trabajo sin riesgo.' 
+  },
+  { 
+    pregunta: '¿Qué métodos de pago aceptan?', 
+    respuesta: 'Aceptamos efectivo, transferencia bancaria, tarjeta de crédito y débito. También ofrecemos planes de pago sin interés para tratamientos mayores a $5,000.' 
+  },
+  { 
+    pregunta: '¿Cuál es el mejor tratamiento para alinear mis dientes?', 
+    respuesta: 'Depende de tu caso. La ortodoncia metálica es más económica y efectiva. La cerámica es más estética. En la consulta evaluamos tu sonrisa y presupuesto.' 
+  },
+];
+
+const gtmId = '';
+---
+
+{gtmId && <GoogleTagManager gtmId={gtmId} />}
+
+<BaseLayout
+  titulo={seo.titulo}
+  descripcion={seo.descripcion}
+  canonicalUrl={seo.canonicalUrl}
+  ogImagen={seo.ogImagen}
+  schema={{
+    nombre:      negocio.nombre,
+    descripcion: negocio.descripcion,
+    telefono:    negocio.telefono,
+    direccion:   negocio.direccion,
+    ciudad:      negocio.ciudad,
+    cp:          negocio.cp,
+    horario:     negocio.horario,
+    tipoNegocio: negocio.tipoSchema,
+  }}
+  telefono={negocio.whatsapp}
+  mensajeWa={`Hola, quiero información sobre los servicios de ${negocio.nombre}`}
+  {...tokens}
+  motionProfile={motionProfile}
+  fuenteHeading={fuentes.heading}
+  fuenteBody={fuentes.body}
+>
+  {/* ── SECCIÓN 1: Hero split — credibilidad visual ── */}
+  <HeroSplit
+    titulo={hero.titulo}
+    subtitulo={hero.subtitulo}
+    badge={hero.badge}
+    ctaTexto={hero.ctaTexto}
+    ctaUrl={hero.ctaUrl}
+    imagenSrc={hero.imagenSrc}
+    imagenAlt={hero.imagenAlt}
+    imagenLado={hero.imagenLado}
+  />
+
+  {/* ── SECCIÓN 2: Stats de credibilidad ── */}
+  <StatsCredenciales stats={stats} />
+
+  {/* ── SECCIÓN 3: Lista de servicios ── */}
+  <ServiciosList
+    servicios={servicios}
+    titulo="Servicios"
+  />
+
+  {/* ── SECCIÓN 4: Proceso en 3 pasos ── */}
+  <ProcesoPasos
+    pasos={proceso}
+    titulo="¿Cómo funciona?"
+    subtitulo="Así de fácil es empezar"
+  />
+
+  {/* ── SECCIÓN 5: FAQ ── */}
+  <FAQAccordion
+    preguntas={faq}
+    titulo="Preguntas frecuentes"
+  />
+
+  {/* ── SECCIÓN 6: Formulario de contacto ── */}
+  <ContactoFormulario
+    titulo="¿Listo para tu sonrisa perfecta?"
+    subtitulo={`Escríbenos y te respondemos el mismo día.`}
+    endpoint="https://formspree.io/f/xyzabc123"
+    campos={['nombre', 'telefono', 'servicio', 'mensaje']}
+    servicios={servicios.map(s => s.nombre)}
+    ctaTexto="Enviar mensaje"
+    whatsappFallback={negocio.whatsapp}
+  />
+
+  {/* ── SECCIÓN 7: Footer ── */}
+  <Footer
+    negocio={negocio.nombre}
+    direccion={negocio.direccion}
+    telefono={negocio.telefono}
+    email={negocio.email}
+    redes={negocio.redes}
+  />
+</BaseLayout>
+
